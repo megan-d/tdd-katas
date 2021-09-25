@@ -1,3 +1,5 @@
+import pytest
+
 # Create a simple calculator that takes a String and returns a integer
 #
 # Signature (pseudo code):
@@ -17,14 +19,33 @@
 #
 # “1,2\n3” should return “6”
 # “2,\n3” is invalid, but no need to clarify it with the program
-# 4. Add validation to not to allow a separator at the end
-#
-# For example “1,2,” should return an error (or throw an exception)
-# 5. Allow the add method to handle different delimiters
-#
-# To change the delimiter, the beginning of the input will contain a separate line that looks like this:
-# //[delimiter]\n[numbers]
-# “//;\n1;3” should return “4”
-# “//|\n1|2|3” should return “6”
-# “//sep\n2sep5” should return “7”
-# “//|\n1|2,3” is invalid and should return an error (or throw an exception) with the message “‘|’ expected but ‘,’ found at position 3.”
+
+
+def add(x):
+    sum = 0
+    if x == "":
+        return sum
+    list_of_values = x.split(",")
+    for val in list_of_values:
+        sum += int(val)
+    return sum
+
+
+def test_empty_string_returns_0():
+    assert add("") == 0
+
+
+def test_single_value_returns_itself():
+    assert add("4") == 4
+
+
+def test_two_values_returns_sum():
+    assert add("1,2") == 3
+
+
+def test_can_handle_unknown_num_of_args():
+    assert add("1,2,3,4") == 10
+
+
+if __name__ == "__main__":
+    add()
