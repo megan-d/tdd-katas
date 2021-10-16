@@ -39,8 +39,9 @@ def search(search_text=""):
         return cities
     if len(search_text) < 2:
         return None
-    match = list(filter(lambda cities: search_text.lower() in cities, search_cities))
-    return match[0].title()
+    matches = list(filter(lambda cities: search_text.lower() in cities, search_cities))
+    formatted_matches = [match.title() for match in matches]
+    return formatted_matches
 
 
 def test_returns_all_city_names():
@@ -55,9 +56,21 @@ def test_returns_no_results_if_search_fewer_than_two_characters():
 
 def test_results_are_case_insensitive():
     search_results = search(search_text="rOmE")
-    assert search_results == "Rome"
+    assert search_results == ["Rome"]
 
 
 def test_results_are_case_insensitive_multiple_words():
     search_results = search(search_text="hONg kOnG")
-    assert search_results == "Hong Kong"
+    assert search_results == ["Hong Kong"]
+
+
+def test_results_are_shown_if_multiple_letters_match_beginning():
+    search_results = search(search_text="Va")
+    assert search_results == ["Valencia", "Vancouver"]
+
+
+def test_results_are_shown_if_multiple_letters_match_middle():
+    search_results = search(search_text="on")
+    search_results_two = search(search_text="ape")
+    assert search_results == ["London", "Hong Kong"]
+    assert search_results_two == ["Budapest"]
